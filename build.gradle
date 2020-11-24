@@ -1,18 +1,22 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url "https://plugins.gradle.org/m2/" }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.0.187', changing: true
+        classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.1.0'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'com.matthewprenger.cursegradle'
 
+def ENV = System.getenv()
 def mc_version = "${mc_major}.4"
 version = "${mc_major}-${exnihilosequentia_version}"
 group = 'novamachina.exnihilosequentia' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -175,6 +179,25 @@ publishing {
     repositories {
         maven {
             url "file:///${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+if(ENV.CURSEFORGE_KEY) {
+    curseforge {
+        apiKey = ENV.CURSEFORGE_KEY
+
+        project {
+            id = '400012'
+            releaseType = 'release'
+            mainArtifact jar
+            addGameVersion '1.16'
+            addGameVersion '1.16.1'
+            addGameVersion '1.16.2'
+            addGameVersion '1.16.3'
+            addGameVersion '1.16.4'
+            changelog = file('changelog.md')
+            changelogType = 'markdown'
         }
     }
 }

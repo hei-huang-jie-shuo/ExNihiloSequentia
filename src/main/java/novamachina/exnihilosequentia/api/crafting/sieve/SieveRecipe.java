@@ -37,7 +37,7 @@ public class SieveRecipe extends SerializableRecipe {
     }
 
     public ItemStack getDrop() {
-        return drop;
+        return drop.copy();
     }
 
     public List<MeshWithChance> getRolls() {
@@ -51,7 +51,7 @@ public class SieveRecipe extends SerializableRecipe {
 
     @Override
     public ItemStack getRecipeOutput() {
-        return drop;
+        return drop.copy();
     }
 
     public boolean isWaterlogged() {
@@ -72,5 +72,16 @@ public class SieveRecipe extends SerializableRecipe {
             }
         }
         return new SieveRecipe(recipeId, input, drop, possibleMeshes, isWaterlogged);
+    }
+
+    @Override
+    public String toString() {
+        return "SieveRecipe{" +
+            "input=" + input +
+            ", drop=" + drop +
+            ", rolls=" + rolls +
+            ", isWaterlogged=" + isWaterlogged +
+            ", recipeId=" + recipeId +
+            '}';
     }
 }
